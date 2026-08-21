@@ -1,3 +1,71 @@
-{% for i in posts %}
-{{ i }} <br>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+
+    <!-- Category Title -->
+    <h3 class="text-uppercase text-warning">
+
+        Category - {{ category.category_name }}
+
+    </h3>
+
+
+    <!-- Posts -->
+    <div class="row mb-2">
+
+        {% if posts %}
+
+            {% for post in posts %}
+
+                <div class="col-md-6">
+
+                    <div class="card border-0">
+
+                        <div class="card-body">
+
+                            <h3>
+                                {{ post.title }}
+                            </h3>
+
+                            <small class="mb-1 text-muted">
+
+                                {{ post.created_at|timesince }}
+                                ago |
+                                {{ post.author }}
+
+                            </small>
+
+                            <p class="card-text">
+
+                                {{ post.short_description|truncatewords:10 }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="col-12">
+
+                <p>
+                    No posts found in this category.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
