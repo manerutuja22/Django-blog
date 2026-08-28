@@ -27,7 +27,11 @@ urlpatterns = [
     path('category/',include('blogs.urls')),
     path('about/', BlogsView.about, name='about'),
     path('follow-us/', BlogsView.follow_us, name='follow_us'),
+    path('register/',views.register, name='register'),
+    path('login/', views.login, name='login'),
 
-    path('<slug:slug>/', BlogsView.blogs, name='blogs'),
+    path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
+    path('blogs/search', BlogsView.search, name='search'),
+    path('logout/',views.logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
