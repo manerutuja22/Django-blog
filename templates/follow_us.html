@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-8 blog-main">
+
+            <div class="blog-post">
+
+                <h2 class="text-uppercase text-warning">
+                    Follow Us
+                </h2>
+
+                <hr>
+
+                <h1 class="blog-post-title">
+                    Connect With Me
+                </h1>
+
+                <p class="lead">
+                    Follow my work and stay connected through my social
+                    media profiles.
+                </p>
+
+            </div>
+
+
+            <div class="text-center mb-5">
+
+                {% for social in social_links %}
+
+                    <div class="mb-3">
+
+                        <a
+                            href="{{ social.url }}"
+                            target="_blank"
+                            class="btn btn-dark"
+                        >
+                            Follow on {{ social.platform }}
+                        </a>
+
+                    </div>
+
+                {% empty %}
+
+                    <p class="text-muted">
+                        Social links will be added soon.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Sidebar -->
+
+        <aside class="col-md-4 blog-sidebar">
+
+            <div class="p-3 mb-3 bg-light rounded">
+
+                <h4 class="font-italic">
+                    About
+                </h4>
+
+                <p class="mb-0">
+
+                    Welcome to Django Blog.
+                    Explore articles and stay connected.
+
+                </p>
+
+            </div>
+
+
+            <div class="p-3">
+
+                <h4 class="font-italic">
+                    Follow Us
+                </h4>
+
+                <ol class="list-unstyled">
+
+                    {% for social in social_links %}
+
+                        <li>
+                            <a
+                                href="{{ social.url }}"
+                                target="_blank"
+                            >
+                                {{ social.platform }}
+                            </a>
+                        </li>
+
+                    {% empty %}
+
+                        <li>
+                            No social links available.
+                        </li>
+
+                    {% endfor %}
+
+                </ol>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+{% endblock %}

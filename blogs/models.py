@@ -33,3 +33,16 @@ class Blog(models.Model):
   
   def __str__(self):
     return self.title
+
+class SocialLink(models.Model):
+
+    platform = models.CharField(max_length=50)
+
+    url = models.URLField()
+
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.platform

@@ -27,14 +27,14 @@
                         <div class="card-body">
 
                             <h3>
-                                {{ post.title }}
+                               <a href="{% url 'blogs' post.slug  %}" class="text-dark"> {{ post.title }}</a>
                             </h3>
 
                             <small class="mb-1 text-muted">
 
                                 {{ post.created_at|timesince }}
                                 ago |
-                                {{ post.author }}
+                                {{ post.author.username }}
 
                             </small>
 

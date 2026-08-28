@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-8 blog-main">
+
+            <!-- About Header -->
+
+            <div class="mb-5">
+
+                <h2 class="text-uppercase text-warning">
+                    About This Blog
+                </h2>
+
+                <hr>
+
+                <h1 class="blog-post-title">
+                    Welcome to Django Blog
+                </h1>
+
+                <p class="lead">
+                    A simple and dynamic blogging platform built using Django.
+                </p>
+
+            </div>
+
+
+            <!-- About Project -->
+
+            <div class="blog-post">
+
+                <h3>
+                    About the Project
+                </h3>
+
+                <p>
+                    Django Blog is a dynamic blogging platform where
+                    users can explore articles across different categories.
+                </p>
+
+                <p>
+                    The website provides different categories such as
+                    Food, Sports, Technology, Health, Science, Business
+                    and Politics.
+                </p>
+
+                <p>
+                    Each published blog can be opened as an individual
+                    article with its title, author, publication date,
+                    featured image, short description and complete blog content.
+                </p>
+
+            </div>
+
+
+            <!-- Technology -->
+
+            <div class="blog-post">
+
+                <h3>
+                    Technologies Used
+                </h3>
+
+                <ul>
+
+                    <li>Python</li>
+
+                    <li>Django</li>
+
+                    <li>HTML</li>
+
+                    <li>CSS</li>
+
+                    <li>Bootstrap</li>
+
+                    <li>SQLite</li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- Features -->
+
+            <div class="blog-post">
+
+                <h3>
+                    Features
+                </h3>
+
+                <ul>
+
+                    <li>Dynamic blog posts</li>
+
+                    <li>Blog categories</li>
+
+                    <li>Featured posts</li>
+
+                    <li>Individual blog pages</li>
+
+                    <li>Dynamic featured images</li>
+
+                    <li>Social media links</li>
+
+                    <li>Admin panel for managing content</li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- Connect -->
+
+            <div class="text-center mb-5">
+
+                <h2 class="font-italic mb-4">
+                    Connect With Me
+                </h2>
+
+                {% for social in social_links %}
+
+                    <a
+                        href="{{ social.url }}"
+                        target="_blank"
+                        class="btn btn-dark mr-2 mb-2"
+                    >
+                        {{ social.platform }}
+                    </a>
+
+                {% empty %}
+
+                    <p class="text-muted">
+                        Social links will be added soon.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Sidebar -->
+
+        <aside class="col-md-4 blog-sidebar">
+
+            <div class="p-3 mb-3 bg-light rounded">
+
+                <h4 class="font-italic">
+                    About
+                </h4>
+
+                <p class="mb-0">
+
+                    A Django-based blogging platform for
+                    sharing articles across different categories.
+
+                </p>
+
+            </div>
+
+
+            <div class="p-3">
+
+                <h4 class="font-italic">
+                    Follow Us
+                </h4>
+
+                <ol class="list-unstyled">
+
+                    {% for social in social_links %}
+
+                        <li>
+                            <a
+                                href="{{ social.url }}"
+                                target="_blank"
+                            >
+                                {{ social.platform }}
+                            </a>
+                        </li>
+
+                    {% empty %}
+
+                        <li>
+                            No social links available.
+                        </li>
+
+                    {% endfor %}
+
+                </ol>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+{% endblock %}
