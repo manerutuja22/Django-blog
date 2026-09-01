@@ -10,8 +10,8 @@
                 Category
             </a>
 
-            <a href="" class="nav-link text-dark">
-                Posts test 
+            <a href="{% url 'posts' %}" class="nav-link text-dark {% if '/posts/' in request.path %} bg-warning {% endif %}">
+                Posts 
             </a>
 
             <a href="{% url 'logout' %}" class="nav-link text-dark">
