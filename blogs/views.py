@@ -5,6 +5,8 @@ from .models import Category
 from django.shortcuts import get_object_or_404 
 from django.shortcuts import redirect
 from django.db.models import Q
+from .models import Comment
+from .forms import CommentForm
 
 # Create your views here.
 def posts_by_category(request, category_id):
@@ -34,12 +36,55 @@ def posts_by_category(request, category_id):
   }
   return render(request,'posts_by_category.html', context)
 
+# def blogs(request, slug):
+#   single_blog = get_object_or_404(Blog, slug=slug, status='Published')
+#   context = {
+#     'single_blog':single_blog,
+#   }
+#   return render(request, 'blogs.html', context)
+
 def blogs(request, slug):
-  single_blog = get_object_or_404(Blog, slug=slug, status='Published')
-  context = {
-    'single_blog':single_blog,
-  }
-  return render(request, 'blogs.html', context)
+
+    single_blog = get_object_or_404(
+        Blog,
+        slug=slug,
+        status='Published'
+    )
+
+    # Save comment
+    if request.method == 'POST':
+
+        if request.user.is_authenticated:
+
+            comment_text = request.POST.get('comment')
+
+            if comment_text:
+                Comment.objects.create(
+                    user=request.user,
+                    blog=single_blog,
+                    comment=comment_text
+                )
+
+            return redirect('blogs', slug=single_blog.slug)
+
+        else:
+            return redirect('login')
+
+    # Get comments
+    comments = Comment.objects.filter(
+        blog=single_blog
+    ).order_by('-created_at')
+
+    categories = Category.objects.all()
+
+    context = {
+        'single_blog': single_blog,
+        'comments': comments,
+        'comment_count': comments.count(),
+        'categories': categories,
+    }
+
+    return render(request, 'blogs.html', context)
 
 def about(request):
 
@@ -67,10 +112,12 @@ def search(request):
     else:
 
         posts = Blog.objects.none()
+    categories = Category.objects.all()
 
     context = {
         'posts': posts,
         'keyword': keyword,
+        'categories':categories,
     }
 
     return render(request, 'search.html', context)

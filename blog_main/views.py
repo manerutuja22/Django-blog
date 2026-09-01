@@ -36,22 +36,45 @@ def register(request):
   }
   return render(request, 'register.html',context)
 
-def login(request):
-  if request.method == "POST":
-    form = AuthenticationForm(request, request.POST)
-    if form.is_valid():
-      username = form.cleaned_data['username']
-      password = form.cleaned_data['password']
+# def login(request):
+#   if request.method == "POST":
+#     form = AuthenticationForm(request, request.POST)
+#     if form.is_valid():
+#       username = form.cleaned_data['username']
+#       password = form.cleaned_data['password']
+    
+#       user = auth.authenticate(username = username , password=password)
+#       if user is not None:
+#         auth.login(request, user)
+#       return redirect('dashboard')
+    
+#   form = AuthenticationForm()
+#   context = {
+#     'form':form,
+#   }
+#   return render(request, 'login.html',context)
 
-      user = auth.authenticate(username = username , password=password)
-      if user is not None:
-        auth.login(request, user)
-      return redirect('dashboard')
-  form = AuthenticationForm()
-  context = {
-    'form':form,
-  }
-  return render(request, 'login.html',context)
+def login(request):
+
+    if request.method == "POST":
+
+        form = AuthenticationForm(request, request.POST)
+
+        if form.is_valid():
+
+            user = form.get_user()
+            auth.login(request, user)
+
+            return redirect('dashboard')
+
+    else:
+        form = AuthenticationForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'login.html', context)
 
 def logout(request):
   auth.logout(request)

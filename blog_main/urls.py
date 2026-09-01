@@ -29,9 +29,9 @@ urlpatterns = [
     path('follow-us/', BlogsView.follow_us, name='follow_us'),
     path('register/',views.register, name='register'),
     path('login/', views.login, name='login'),
-
+    path('blogs/search/', BlogsView.search, name='search'),
     path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
-    path('blogs/search', BlogsView.search, name='search'),
+    
     path('logout/',views.logout, name='logout'),
 
     path('dashboards/', include('dashboards.urls')),

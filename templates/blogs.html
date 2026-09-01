@@ -1,38 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Page content -->
+
 <div class="container mt-5">
 
     <div class="row">
 
+        <!-- LEFT SIDE: BLOG + COMMENTS -->
         <div class="col-lg-8">
 
-            <!-- Post content -->
             <article>
 
-                <!-- Post header -->
+                <!-- Post Header -->
                 <header class="mb-4">
 
-                    <!-- Post title -->
                     <h1 class="fw-bolder mb-1">
                         {{ single_blog.title }}
                     </h1>
 
-                    <!-- Post meta content -->
                     <div class="text-muted fst-italic mb-2">
 
                         Posted on
                         {{ single_blog.created_at|date:"F d, Y" }}
                         by
-                        {{ single_blog.author }}
+                        {{ single_blog.author.username }}
 
                     </div>
 
-                    <!-- Post category -->
                     <a
                         class="badge bg-warning text-decoration-none text-light"
-                        href="#"
+                        href="{% url 'posts_by_category' single_blog.category.id %}"
                     >
                         {{ single_blog.category }}
                     </a>
@@ -40,7 +37,7 @@
                 </header>
 
 
-                <!-- Preview image figure -->
+                <!-- Featured Image -->
                 <figure class="mb-4">
 
                     {% if single_blog.featured_image %}
@@ -56,16 +53,13 @@
                 </figure>
 
 
-                <!-- Post content -->
+                <!-- Blog Content -->
                 <section class="mb-5">
 
-                    <!-- Short Description -->
                     <p class="fs-5 mb-4">
                         {{ single_blog.short_description }}
                     </p>
 
-
-                    <!-- Body Description -->
                     <div class="fs-5 mb-4">
                         {{ single_blog.blog_body }}
                     </div>
@@ -74,13 +68,102 @@
 
             </article>
 
+
+            <!-- COMMENTS SECTION -->
+            <hr>
+
+            <h4 class="mb-4">
+                Comments ({{ comment_count }})
+            </h4>
+
+
+            {% if comments %}
+
+                {% for comment in comments %}
+
+                    <div class="card mb-3">
+
+                        <div class="card-body">
+
+                            <p class="card-text mb-2">
+                                {{ comment.comment }}
+                            </p>
+
+                            <small class="text-muted">
+
+                                By {{ comment.user.username }}
+                                |
+                                {{ comment.created_at|timesince }} ago
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No comments yet.</p>
+
+            {% endif %}
+
+
+            <!-- ADD COMMENT -->
+            <hr>
+
+            {% if user.is_authenticated %}
+
+                <h4>Add a Comment</h4>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+
+                        <textarea
+                            name="comment"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Write your comment..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                    <br>
+
+                    <button
+                        type="submit"
+                        class="btn btn-warning"
+                    >
+                        Post Comment
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <p>
+                    Please
+                    <a href="{% url 'login' %}">
+                        login
+                    </a>
+                    to add a comment.
+                </p>
+
+            {% endif %}
+
         </div>
+        <!-- END LEFT COLUMN -->
 
 
-        <!-- Side widgets -->
+        <!-- RIGHT SIDE: SIDEBAR -->
         <div class="col-lg-4">
 
-            <!-- Search widget -->
+            <!-- Search -->
             <div class="card mb-4">
 
                 <div class="card-header">
@@ -89,32 +172,42 @@
 
                 <div class="card-body">
 
-                    <div class="input-group">
+                    <form
+                        action="{% url 'search' %}"
+                        method="GET"
+                    >
 
-                        <input
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter search term..."
-                            aria-label="Enter search term..."
-                            aria-describedby="button-search"
-                        >
+                        <div class="input-group">
 
-                        <button
-                            class="btn btn-primary"
-                            id="button-search"
-                            type="button"
-                        >
-                            Go!
-                        </button>
+                            <input
+                                class="form-control"
+                                type="text"
+                                name="keyword"
+                                placeholder="Enter search term..."
+                                required
+                            >
 
-                    </div>
+                            <div class="input-group-append">
+
+                                <button
+                                    class="btn btn-warning"
+                                    type="submit"
+                                >
+                                    Go!
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
 
                 </div>
 
             </div>
 
 
-            <!-- Categories widget -->
+            <!-- Categories -->
             <div class="card mb-4 p-3">
 
                 <h4 class="font-italic">
@@ -123,31 +216,28 @@
 
                 <div class="card-body">
 
-                    <div class="row">
+                    <ul class="list-unstyled mb-0">
 
-                        <div class="col-sm-6">
+                        {% for cat in categories %}
 
-                            <ul class="list-unstyled mb-0">
-                                 {% for cat in categories %}
-                                <li>
-                                    <a href="{% url 'posts_by_category' cat.id %}">{{ cat.category_name }}</a>
-                                </li>
-                                {% endfor %}
+                            <li>
 
-                                
+                                <a href="{% url 'posts_by_category' cat.id %}">
+                                    {{ cat.category_name }}
+                                </a>
 
-                            </ul>
+                            </li>
 
-                        </div>
+                        {% endfor %}
 
-                    </div>
+                    </ul>
 
                 </div>
 
             </div>
 
 
-            <!-- Side widget -->
+            <!-- Follow Us -->
             <div class="card mb-4 p-3">
 
                 <h4 class="font-italic">
@@ -157,11 +247,15 @@
                 <ol class="list-unstyled">
 
                     <li>
-                        <a href="#">GitHub</a>
+                        <a href="#">
+                            GitHub
+                        </a>
                     </li>
 
                     <li>
-                        <a href="#">LinkedIn</a>
+                        <a href="#">
+                            LinkedIn
+                        </a>
                     </li>
 
                 </ol>
@@ -169,8 +263,10 @@
             </div>
 
         </div>
+        <!-- END RIGHT COLUMN -->
 
     </div>
+    <!-- END ROW -->
 
 </div>
 
